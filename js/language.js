@@ -815,10 +815,16 @@ class LanguageManager {
     translateElements(lang) {
         const translations = this.translations[lang];
         
+        // Check if translations exist
+        if (!translations) {
+            console.warn(`Translations for language '${lang}' not found`);
+            return;
+        }
+        
         // Translate elements with data-translate attribute
         $('[data-translate]').each(function() {
             const key = $(this).data('translate');
-            if (translations[key]) {
+            if (translations && translations[key]) {
                 $(this).text(translations[key]);
             }
         });
@@ -826,7 +832,7 @@ class LanguageManager {
         // Translate placeholders
         $('[data-translate-placeholder]').each(function() {
             const key = $(this).data('translate-placeholder');
-            if (translations[key]) {
+            if (translations && translations[key]) {
                 $(this).attr('placeholder', translations[key]);
             }
         });
@@ -834,7 +840,7 @@ class LanguageManager {
         // Translate values
         $('[data-translate-value]').each(function() {
             const key = $(this).data('translate-value');
-            if (translations[key]) {
+            if (translations && translations[key]) {
                 $(this).attr('value', translations[key]);
             }
         });
@@ -842,13 +848,13 @@ class LanguageManager {
         // Translate content attributes
         $('[data-translate-content]').each(function() {
             const key = $(this).data('translate-content');
-            if (translations[key]) {
+            if (translations && translations[key]) {
                 $(this).attr('content', translations[key]);
             }
         });
         
         // Translate title
-        if (translations['meta.title']) {
+        if (translations && translations['meta.title']) {
             document.title = translations['meta.title'];
         }
     }
@@ -865,5 +871,8 @@ $(document).ready(function() {
         console.log('Fallback language:', savedLang);
     }
 });
+
+
+
 
 
